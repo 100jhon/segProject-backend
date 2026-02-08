@@ -19,4 +19,4 @@ Configurar el archivo `application.properties` con las credenciales de la base d
 
 ## Ejecución
 ```bash
-./mvnw spring-boot:run
+mvn spring-boot:run
