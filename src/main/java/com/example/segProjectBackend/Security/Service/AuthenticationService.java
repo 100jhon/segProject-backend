@@ -37,11 +37,12 @@ public class AuthenticationService {
         this.rolRepository = rolRepository;
         this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     public LoginResponseDto login(LoginRequestDto request) {
         try {
-            // 🔐 Autenticar usuario
+            //  Autenticar usuario
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getCorreo(),
@@ -49,17 +50,17 @@ public class AuthenticationService {
                     )
             );
 
-            // 🔎 Buscar usuario en la base de datos
+            //  Buscar usuario en la base de datos
             UsuarioEntity usuario = usuarioRepository.findByCorreo(request.getCorreo())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-            // ✅ Adaptar a UserDetails
+            //  Adaptar a UserDetails
             UserDetails userDetails = new UserInfoDetails(usuario);
 
-            // 🔐 Generar token JWT
+            //  Generar token JWT
             String token = jwtService.generateToken(userDetails);
 
-            // 🔁 Devolver token al frontend
+            //  Devolver token al frontend
             return new LoginResponseDto(token);
 
         } catch (AuthenticationException e) {
@@ -92,6 +93,4 @@ public class AuthenticationService {
 
         return new LoginResponseDto(token);
     }
-
-
 }
